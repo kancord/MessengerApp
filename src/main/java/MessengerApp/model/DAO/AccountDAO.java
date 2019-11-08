@@ -5,13 +5,18 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
+
 
 @Repository
+@Transactional
 public class AccountDAO  {
     @Autowired
     private SessionFactory sessionFactory;
 
+    @Autowired
     public void setSessionFactory(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
     }
@@ -24,7 +29,7 @@ public class AccountDAO  {
     public Account getAccountByNickname(String nickname){
         Session session = sessionFactory.getCurrentSession();
         String sql = "SELECT e FROM " + Account.class.getName() + " e " //
-                + " Where e.NICKNAME = :nickname ";
+                + " Where e.nickname = :nickname ";
         Query query = session.createQuery(sql);
         query.setParameter("nickname", nickname);
         return (Account) query.getSingleResult();
@@ -38,8 +43,16 @@ public class AccountDAO  {
         account.setFirstName(firstName);
         account.setLastName(lastName);
         account.setNickname(nickname);
-        account.setEncPassword(password);
+        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+        account.setEncPassword(bCryptPasswordEncoder.encode(password));
         session.persist(account);
+    }
+
+    public void createAccountByObject(Account acc) {
+        Session session = sessionFactory.getCurrentSession();
+        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+        acc.setEncPassword(bCryptPasswordEncoder.encode(acc.getEncPassword()));
+        session.persist(acc);
     }
 
     public void deleteAccount(String nickname) {
@@ -55,7 +68,8 @@ public class AccountDAO  {
         account.setFirstName(firstName);
         account.setLastName(lastName);
         account.setNickname(nickname);
-        account.setEncPassword(password);
+        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+        account.setEncPassword(bCryptPasswordEncoder.encode(password));
         session.update(account);
     }
 

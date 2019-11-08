@@ -4,7 +4,7 @@ package MessengerApp.model;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "SUBSCRIBE")
+@Table(name = "FAVORITES")
 public class Favorites {
 
     @Id
