@@ -11,7 +11,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 public class LoginController {
-    AccountDAO accountDAO;
+    private AccountDAO accountDAO;
 
     @Autowired
     public void setAccountDAO(AccountDAO accountDAO) {

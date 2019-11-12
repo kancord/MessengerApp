@@ -1,0 +1,38 @@
+body {
+    margin: 0;
+    padding: 0;
+}
+
+.contentDiv {
+    text-align: justify;
+    margin-left: auto;
+    margin-right: auto;
+    position: relative;
+    left: 10%;
+    top: 40px;
+    width: 35em;
+    z-index: 1;
+}
+
+.vertMenu {
+    margin-top: 30px;
+    position: fixed;
+    height: 100%;
+    width: 20%;
+    background-color: #EEEEEE;
+}
+
+.horizMenu {
+    display: inline;
+    background-color: #DDDDDD;
+    position: fixed;
+    width: 100%;
+    height: 30px;
+    padding-left: 75%;
+    z-index: 5;
+}
+
+.inputForm {
+    display: table-cell;
+    text-align: right;
+}

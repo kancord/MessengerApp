@@ -41,13 +41,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
         http.csrf().disable();
         System.out.println("Custom configure");
-        http.authorizeRequests().antMatchers("/login", "/logout", "/new_account").permitAll();
+        http.authorizeRequests().antMatchers("/login", "/logout", "/new_account", "/logoutSuccessful").permitAll();
+        http.authorizeRequests().antMatchers("/static/main.css").permitAll();
         http.authorizeRequests().antMatchers("/**").authenticated();
         http.authorizeRequests().and().exceptionHandling().accessDeniedPage("/403");
 
         http.authorizeRequests().and().formLogin()
                 .loginPage("/login")
-                .defaultSuccessUrl("/index")
+                .defaultSuccessUrl("/")
                 .failureUrl("/login?error=true")
                 .permitAll()
                 .usernameParameter("username")
