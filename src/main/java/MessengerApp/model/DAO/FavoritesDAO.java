@@ -31,17 +31,17 @@ public class FavoritesDAO {
     public List<Favorites> getFavoritesByAccount(Account account){
         Session session = sessionFactory.getCurrentSession();
         String sql = "SELECT e FROM " + Favorites.class.getName() + " e " //
-                + " Where e.accountId = :account_id ";
+                + " Where e.account = :account ";
         Query query = session.createQuery(sql);
-        query.setParameter("account_id", account.getId());
+        query.setParameter("account", account);
         return  (List<Favorites>) query.getResultList();
     }
 
     public void createFavorite(Account account, Message message) {
         Session session = sessionFactory.getCurrentSession();
         Favorites fav = new Favorites();
-        fav.setAccountId(account);
-        fav.setMessageId(message);
+        fav.setAccount(account);
+        fav.setMessage(message);
         session.persist(fav);
     }
 

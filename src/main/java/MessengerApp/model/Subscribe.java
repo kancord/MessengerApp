@@ -12,33 +12,33 @@ public class Subscribe {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ACCOUNT_ID", nullable = false)
-    private Account accountId;
+    private Account account;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "SUB_ACCOUNT_ID", nullable = false)
-    private Account subAccountId;
+    private Account subAccount;
 
     public int getId() {
         return Id;
     }
 
-    public Account getAccountId() {
-        return accountId;
+    public Account getAccount() {
+        return account;
     }
 
-    public Account getSubAccountId() {
-        return subAccountId;
+    public Account getSubAccount() {
+        return subAccount;
     }
 
     public void setId(int id) {
         Id = id;
     }
 
-    public void setAccountId(Account accountId) {
-        this.accountId = accountId;
+    public void setAccount(Account account) {
+        this.account = account;
     }
 
-    public void setSubAccountId(Account subAccountId) {
-        this.subAccountId = subAccountId;
+    public void setSubAccount(Account subAccount) {
+        this.subAccount = subAccount;
     }
 }

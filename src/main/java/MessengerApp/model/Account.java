@@ -51,7 +51,7 @@ public class Account {
     }
 
     public void setId(int id) {
-        Id = id;
+        this.Id = id;
     }
 
     public void setNickname(String nickname) {

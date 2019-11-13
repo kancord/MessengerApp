@@ -15,7 +15,7 @@ public class Message {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ACCOUNT_ID", nullable = false)
-    private Account accountId;
+    private Account account;
 
     public int getId() {
         return Id;
@@ -25,8 +25,8 @@ public class Message {
         return text;
     }
 
-    public Account getAccountId() {
-        return accountId;
+    public Account getAccount() {
+        return account;
     }
 
     public void setId(int id) {
@@ -37,7 +37,7 @@ public class Message {
         this.text = text;
     }
 
-    public void setAccountId(Account accountId) {
-        this.accountId = accountId;
+    public void setAccount(Account account) {
+        this.account = account;
     }
 }

@@ -10,7 +10,8 @@
 </div>
 <div  class="vertMenu">
         <ul>
-            <li><a href="/">My message</a></li>
+            <li><a href="/messages">My message</a></li>
+            <li><a href="/accounts">People</a></li>
             <li><a href="/">Subscribes</a></li>
             <li><a href="/">Favorites</a></li>
             <li><a href="/">News</a></li>

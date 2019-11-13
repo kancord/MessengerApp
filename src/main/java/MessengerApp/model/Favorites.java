@@ -13,33 +13,33 @@ public class Favorites {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ACCOUNT_ID", nullable = false)
-    private Account accountId;
+    private Account account;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "MESSAGE_ID", nullable = false)
-    private Message messageId;
+    private Message message;
 
     public int getId() {
         return Id;
     }
 
-    public Account getAccountId() {
-        return accountId;
+    public Account getAccount() {
+        return account;
     }
 
-    public Message getMessageId() {
-        return messageId;
+    public Message getMessage() {
+        return message;
     }
 
     public void setId(int id) {
         Id = id;
     }
 
-    public void setAccountId(Account accountId) {
-        this.accountId = accountId;
+    public void setAccount(Account account) {
+        this.account = account;
     }
 
-    public void setMessageId(Message messageId) {
-        this.messageId = messageId;
+    public void setMessage(Message message) {
+        this.message = message;
     }
 }

@@ -9,6 +9,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 
 @Repository
 @Transactional
@@ -35,6 +37,12 @@ public class AccountDAO  {
         return (Account) query.getSingleResult();
     }
 
+    public List<Account> getAccountList(){
+        Session session = sessionFactory.getCurrentSession();
+        String sql = "SELECT e FROM " + Account.class.getName() + " e " ;
+        Query query = session.createQuery(sql);
+        return  (List<Account>) query.getResultList();
+    }
 
     public void createAccount(String nickname, String firstName, String lastName, String about, String password) {
         Session session = sessionFactory.getCurrentSession();

@@ -18,6 +18,9 @@ public class SubscribeDAO {
     @Autowired
     private SessionFactory sessionFactory;
 
+    @Autowired
+    private AccountDAO accountDAO;
+
     public void setSessionFactory(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
     }
@@ -27,21 +30,41 @@ public class SubscribeDAO {
         return (Subscribe) session.get(Subscribe.class, id);
     }
 
-    public List<Subscribe> getSubscribesByAccount(Account account){
+    public List<Subscribe> getSubscribesByAccount(Account account) {
         Session session = sessionFactory.getCurrentSession();
         String sql = "SELECT e FROM " + Subscribe.class.getName() + " e " //
-                + " Where e.accountId = :account_id ";
+                + " Where e.account = :account ";
         Query query = session.createQuery(sql);
-        query.setParameter("account_id", account.getId());
-        return  (List<Subscribe>) query.getResultList();
+        query.setParameter("account", account);
+        return (List<Subscribe>) query.getResultList();
+    }
+
+    public boolean hasSubscribeByID(int accountId, int subAccountId) {
+        Session session = sessionFactory.getCurrentSession();
+        String sql = "SELECT count(1) FROM " + Subscribe.class.getName() + " e " //
+                + " Where e.account = :account and e.subAccount = :sub_account";
+        Query query = session.createQuery(sql);
+        query.setParameter("account", accountDAO.getAccountByID(accountId));
+        query.setParameter("sub_account", accountDAO.getAccountByID(subAccountId));
+        return (Long) query.uniqueResult() > 0;
     }
 
     public void createSubscribe(Account account, Account subAccount) {
         Session session = sessionFactory.getCurrentSession();
         Subscribe subscribe = new Subscribe();
-        subscribe.setAccountId(account);
-        subscribe.setSubAccountId(subAccount);
+        subscribe.setAccount(account);
+        subscribe.setSubAccount(subAccount);
         session.persist(subscribe);
+    }
+
+    public void createSubscribeById(int accountId, int subAccountId) {
+        if (!hasSubscribeByID(accountId, subAccountId)) {
+            Session session = sessionFactory.getCurrentSession();
+            Subscribe subscribe = new Subscribe();
+            subscribe.setAccount(accountDAO.getAccountByID(accountId));
+            subscribe.setSubAccount(accountDAO.getAccountByID(subAccountId));
+            session.persist(subscribe);
+        }
     }
 
     public void deleteSubscribe(int id) {

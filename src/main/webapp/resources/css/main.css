@@ -36,3 +36,10 @@ body {
     display: table-cell;
     text-align: right;
 }
+
+.message {
+    text-align: justify;
+    border: 3px solid #EEEEEE;
+    border-radius: 10px;
+    margin-top: 3px;
+}

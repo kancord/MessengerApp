@@ -1,6 +1,7 @@
 package MessengerApp.config;
 
 
+import MessengerApp.service.AuthenticationSuccessHandlerImpl;
 import MessengerApp.service.MyUserDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -25,6 +26,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private MyUserDetailService userDetailsService;
 
+    @Autowired
+    private AuthenticationSuccessHandlerImpl authenticationSuccessHandler;
+
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
         BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
@@ -40,7 +44,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
 
         http.csrf().disable();
-        System.out.println("Custom configure");
+//        System.out.println("Custom configure");
         http.authorizeRequests().antMatchers("/login", "/logout", "/new_account", "/logoutSuccessful").permitAll();
         http.authorizeRequests().antMatchers("/static/main.css").permitAll();
         http.authorizeRequests().antMatchers("/**").authenticated();
@@ -48,6 +52,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
         http.authorizeRequests().and().formLogin()
                 .loginPage("/login")
+                .successHandler(authenticationSuccessHandler)
                 .defaultSuccessUrl("/")
                 .failureUrl("/login?error=true")
                 .permitAll()

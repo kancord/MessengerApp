@@ -30,16 +30,16 @@ public class MessageDAO {
     public List<Message> getMessagesByAccount(Account account){
         Session session = sessionFactory.getCurrentSession();
         String sql = "SELECT e FROM " + Message.class.getName() + " e " //
-                + " Where e.accountId = :account_id ";
+                + " Where e.account = :account ";
         Query query = session.createQuery(sql);
-        query.setParameter("account_id", account.getId());
+        query.setParameter("account", account);
         return  (List<Message>) query.getResultList();
     }
 
     public void createMessage(String text, Account account) {
         Session session = sessionFactory.getCurrentSession();
         Message msg = new Message();
-        msg.setAccountId(account);
+        msg.setAccount(account);
         msg.setText(text);
         session.persist(msg);
     }
