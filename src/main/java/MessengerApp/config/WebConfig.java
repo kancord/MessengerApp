@@ -23,6 +23,6 @@ public class WebConfig implements WebMvcConfigurer {
     }
 
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-       registry.addResourceHandler("/static/**").addResourceLocations("/resources/css/");
+       registry.addResourceHandler("/static/**").addResourceLocations("/resources/css/", "/resources/jquery/");
      }
 }

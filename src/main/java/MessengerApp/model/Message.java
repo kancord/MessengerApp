@@ -1,6 +1,7 @@
 package MessengerApp.model;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 @Table(name = "MESSAGE")
@@ -17,8 +18,17 @@ public class Message {
     @JoinColumn(name = "ACCOUNT_ID", nullable = false)
     private Account account;
 
+    @Column(name="CREATE_DATE")
+    private Date createDate;
+
+
+
     public int getId() {
         return Id;
+    }
+
+    public Date getCreateDate() {
+        return createDate;
     }
 
     public String getText() {
@@ -39,5 +49,9 @@ public class Message {
 
     public void setAccount(Account account) {
         this.account = account;
+    }
+
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
     }
 }

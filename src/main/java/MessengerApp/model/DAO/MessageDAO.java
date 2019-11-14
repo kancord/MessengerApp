@@ -2,6 +2,7 @@ package MessengerApp.model.DAO;
 
 import MessengerApp.model.Account;
 import MessengerApp.model.Message;
+import MessengerApp.model.Subscribe;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
 
 @Repository
@@ -30,10 +32,25 @@ public class MessageDAO {
     public List<Message> getMessagesByAccount(Account account){
         Session session = sessionFactory.getCurrentSession();
         String sql = "SELECT e FROM " + Message.class.getName() + " e " //
-                + " Where e.account = :account ";
+                + " WHERE e.account = :account ORDER BY e.createDate DESC";
         Query query = session.createQuery(sql);
         query.setParameter("account", account);
         return  (List<Message>) query.getResultList();
+    }
+
+    public List<Object[]> getMessagesToYou(Account account){
+        Session session = sessionFactory.getCurrentSession();
+        String sql = "select ac.firstName, ac.lastName, m.createDate, m.text " +
+                "from " + Message.class.getName() + " m " +
+                "INNER JOIN m.account ac "  +
+                " WHERE ac IN " +
+                "(SELECT sub.subAccount " +
+                " FROM " + Subscribe.class.getName() + " sub " +
+                " WHERE sub.account=:account)" +
+                "ORDER BY m.createDate DESC";
+        Query query = session.createQuery(sql);
+        query.setParameter("account", account);
+        return  (List<Object[]>) query.getResultList();
     }
 
     public void createMessage(String text, Account account) {
@@ -41,6 +58,7 @@ public class MessageDAO {
         Message msg = new Message();
         msg.setAccount(account);
         msg.setText(text);
+        msg.setCreateDate(new Date());
         session.persist(msg);
     }
 

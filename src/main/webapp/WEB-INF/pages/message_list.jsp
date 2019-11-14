@@ -1,5 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <html>
 <head>
     <title>Messages</title>
@@ -9,12 +10,11 @@
 <%@ include file="base.jsp" %>
 <div id="messages" class="contentDiv">
     <h2>My messages</h2>
-    <a href="/messages/add"><button><b>+</b></button></a>
+    <a href="/message/add"><button><b>+</b></button></a>
     <c:forEach var="message" items="${messageList}">
+        <h4><fmt:formatDate value="${message.createDate}" pattern="HH:mm dd.MM.yyyy "/></h4>
         <div class="message">
-            <p></p>
-            <p>${message.text}</p>
-            <p></p>
+            <textarea cols="50" rows="5" readonly style="resize: none; border: none;">${message.text}</textarea>
         </div>
     </c:forEach>
 </div>

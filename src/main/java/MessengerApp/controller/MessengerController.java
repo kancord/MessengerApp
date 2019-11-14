@@ -26,17 +26,29 @@ public class MessengerController {
     private SubscribeDAO subscribeDAO;
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
-    public ModelAndView mainPage() {
+    public ModelAndView mainPage(@AuthenticationPrincipal MyUser customUser) {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("index");
+        modelAndView.addObject("feedList", messageDAO.getMessagesToYou(accountDAO.getAccountByID(customUser.getId())));
         return modelAndView;
     }
 
-    @RequestMapping(value = "/accounts", method = RequestMethod.GET)
+    @RequestMapping(value = "/account", method = RequestMethod.GET)
     public ModelAndView accounts() {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("account_list");
         modelAndView.addObject("accountList", accountDAO.getAccountList());
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/account/{id}", method = RequestMethod.GET)
+    public ModelAndView accountDetail(@PathVariable("id") int id, @AuthenticationPrincipal MyUser customUser) {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("account_detail");
+        modelAndView.addObject("account", accountDAO.getAccountByID(id));
+        modelAndView.addObject("messageList", messageDAO.getMessagesByAccount(accountDAO.getAccountByID(id)));
+        boolean isFollowed = (subscribeDAO.hasSubscribeByID(customUser.getId(), id) || customUser.getId()==id);
+        modelAndView.addObject("isFollowed", isFollowed);
         return modelAndView;
     }
 
@@ -47,7 +59,7 @@ public class MessengerController {
         return "OK";
     }
 
-    @RequestMapping(value = "/messages", method = RequestMethod.GET)
+    @RequestMapping(value = "/message", method = RequestMethod.GET)
     public ModelAndView messages(@AuthenticationPrincipal MyUser customUser) {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("message_list");
@@ -55,18 +67,34 @@ public class MessengerController {
         return modelAndView;
     }
 
-    @RequestMapping(value = "/messages/add", method = RequestMethod.GET)
+    @RequestMapping(value = "/message/add", method = RequestMethod.GET)
     public ModelAndView messagesAddGet() {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("message_add");
         return modelAndView;
     }
 
-    @RequestMapping(value = "/messages/add", method = RequestMethod.POST)
+    @RequestMapping(value = "/message/add", method = RequestMethod.POST)
     public ModelAndView messagesAddPost(@ModelAttribute("message") Message msg, @AuthenticationPrincipal MyUser customUser) {
         ModelAndView modelAndView = new ModelAndView();
         messageDAO.createMessage(msg.getText(), accountDAO.getAccountByID(customUser.getId()));
-        modelAndView.setViewName("redirect:/messages");
+        modelAndView.setViewName("redirect:/message");
         return modelAndView;
+    }
+
+    @RequestMapping(value = "/sub", method = RequestMethod.GET)
+    public ModelAndView subs(@AuthenticationPrincipal MyUser customUser) {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("subscribe_list");
+        modelAndView.addObject("subscriberAccountList", accountDAO.getSubscriberList(customUser.getId()));
+        modelAndView.addObject("followAccountList", accountDAO.getFollowList(customUser.getId()));
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/delSub/{subId}", method = RequestMethod.DELETE)
+    @ResponseBody
+    public String ajaxDelSubscribe(@PathVariable("subId") int subId, @AuthenticationPrincipal MyUser customUser) {
+        subscribeDAO.deleteSubscribe(customUser.getId(), subId);
+        return "OK";
     }
 }

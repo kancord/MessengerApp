@@ -4,27 +4,37 @@
 <head>
     <title>Peoples</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/main.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="/static/jquery-3.4.1.min.js"></script>
 </head>
 <body>
 
 <%@ include file="base.jsp" %>
-<p></p>
-<script type="text/javascript">
-    function subscribe(id, subId) {
-        $.ajax({
-            url: '/addSub',
-            type: 'GET',
-            dataType: 'json',
-            contentType: 'application/json',
-            mimeType: 'application/json',
-            data: ({
-                id: id,
-                subId: subId
-            })
-        });
-    }
-</script>
+<%--<script type="text/javascript">--%>
+    <%--function subscribe(id, subId, btn) {--%>
+        <%--$.ajax({--%>
+            <%--url: '/addSub',--%>
+            <%--type: 'GET',--%>
+            <%--dataType: 'json',--%>
+            <%--contentType: 'application/json',--%>
+            <%--mimeType: 'application/json',--%>
+            <%--data: ({--%>
+                <%--id: id,--%>
+                <%--subId: subId--%>
+            <%--})--%>
+        <%--});--%>
+        <%--($(btn).parentNode).find("#unfollow").show();--%>
+        <%--$(btn).hide();--%>
+    <%--}--%>
+    <%--function unfollow(subId, btn) {--%>
+        <%--$.ajax({--%>
+            <%--url: '/delSub/' + subId,--%>
+            <%--type: 'DELETE',--%>
+            <%--dataType: 'json'--%>
+        <%--});--%>
+        <%--($(btn).parentNode).find("#subscribe").show();--%>
+        <%--$(btn).hide();--%>
+    <%--}--%>
+<%--</script>--%>
 <div id="accounts" class="contentDiv">
     <table>
         <th>Firstname</th>
@@ -33,10 +43,11 @@
 
         <c:forEach var="account" items="${accountList}">
             <tr>
-                <td>${account.firstName}</td>
-                <td>${account.lastName}</td>
+                <td><a href="/account/${account.id}">${account.firstName}</a></td>
+                <td><a href="/account/${account.id}">${account.lastName}</a></td>
                 <td>
-                    <button id="sub" onclick="subscribe(${pageContext.request.userPrincipal.principal.id}, ${account.id})">Subscribe</button>
+                    <%--<button id="subscribe" onclick="subscribe(${pageContext.request.userPrincipal.principal.id}, ${account.id}, this)">Subscribe</button>--%>
+                    <%--<button id="unfollow" onclick="unfollow(${account.id}, this)" hidden>Unfollow</button>--%>
                 </td>
             </tr>
         </c:forEach>

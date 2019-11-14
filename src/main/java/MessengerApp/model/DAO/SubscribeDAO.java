@@ -30,6 +30,16 @@ public class SubscribeDAO {
         return (Subscribe) session.get(Subscribe.class, id);
     }
 
+    public Subscribe getSubscribeByAccIdSubId(int accountId, int subAccountId) {
+        Session session = sessionFactory.getCurrentSession();
+        String sql = "SELECT e FROM " + Subscribe.class.getName() + " e " //
+                + " Where e.account = :account  and e.subAccount = :subAccount";
+        Query query = session.createQuery(sql);
+        query.setParameter("account", accountDAO.getAccountByID(accountId));
+        query.setParameter("subAccount", accountDAO.getAccountByID(subAccountId));
+        return (Subscribe) query.uniqueResult();
+    }
+
     public List<Subscribe> getSubscribesByAccount(Account account) {
         Session session = sessionFactory.getCurrentSession();
         String sql = "SELECT e FROM " + Subscribe.class.getName() + " e " //
@@ -67,10 +77,12 @@ public class SubscribeDAO {
         }
     }
 
-    public void deleteSubscribe(int id) {
-        Session session = sessionFactory.getCurrentSession();
-        Subscribe subscribe = getSubscribeByID(id);
-        session.delete(subscribe);
-    }
+    public void deleteSubscribe(int accountId, int subAccountId) {
+        if (hasSubscribeByID(accountId, subAccountId)) {
+            Session session = sessionFactory.getCurrentSession();
+            Subscribe subscribe = getSubscribeByAccIdSubId(accountId, subAccountId);
+            session.delete(subscribe);
+        }
 
+    }
 }

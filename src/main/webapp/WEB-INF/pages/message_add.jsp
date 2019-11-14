@@ -11,7 +11,7 @@
         <form method="POST">
             <label><b>Your message:</b></label>
             <div class="inputForm">
-                <textarea id="text" name="text" cols="50" rows="5" value="${message.text}"> </textarea>
+                <textarea id="text" name="text" cols="50" rows="5" value="${message.text}" required></textarea>
                 <p></p>
             </div>
             <input type="submit" value="Add"style="margin-top: 20px">

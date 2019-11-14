@@ -18,10 +18,10 @@
                 <input type="text" name="nickname" id="nickname" value="${account.nickname}" required>
                 <p></p>
                 <label for="firstName">Firstname</label>
-                <input type="text" name="firstName" id="firstName" value="${account.firstName}">
+                <input type="text" name="firstName" id="firstName" value="${account.firstName}" required>
                 <p></p>
                 <label for="lastName">Lastname</label>
-                <input type="text" name="lastName" id="lastName" value="${account.lastName}">
+                <input type="text" name="lastName" id="lastName" value="${account.lastName}" required>
                 <p></p>
                 <label for="about">About</label>
                 <input type="text" name="about" id="about" value="${account.about}">

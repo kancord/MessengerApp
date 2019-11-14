@@ -1,6 +1,7 @@
 package MessengerApp.model.DAO;
 
 import MessengerApp.model.Account;
+import MessengerApp.model.Subscribe;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
@@ -82,4 +83,25 @@ public class AccountDAO  {
     }
 
 
+    public List<Account> getSubscriberList(int accountId) {
+        Session session = sessionFactory.getCurrentSession();
+        String sql = "select ac " +
+                "from " + Subscribe.class.getName() + " sub " +
+                "INNER JOIN sub.account ac "  +
+                " WHERE sub.subAccount=:account ";
+        Query query = session.createQuery(sql);
+        query.setParameter("account", getAccountByID(accountId));
+        return  (List<Account>) query.getResultList();
+    }
+
+    public List<Account> getFollowList(int accountId) {
+        Session session = sessionFactory.getCurrentSession();
+        String sql = "select ac " +
+                "from " + Subscribe.class.getName() + " sub " +
+                "INNER JOIN sub.subAccount ac "  +
+                " WHERE sub.account=:account ";
+        Query query = session.createQuery(sql);
+        query.setParameter("account", getAccountByID(accountId));
+        return  (List<Account>) query.getResultList();
+    }
 }
