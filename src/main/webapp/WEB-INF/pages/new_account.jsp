@@ -11,7 +11,12 @@
     <%@ include file="base.jsp" %>
     <div class="contentDiv">
         <h3> New Account</h3>
-
+        <c:if test="${pageContext.request.getParameter('error') == 'login'}">
+            <p>Register Failed! Wrong login. Please try again</p>
+        </c:if>
+        <c:if test="${pageContext.request.getParameter('error') == 'password'}">
+            <p>Register Failed! Wrong password. Please try again</p>
+        </c:if>
         <form  method="POST">
             <div class="inputForm">
                 <label for="nickname">Login</label>

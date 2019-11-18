@@ -8,7 +8,7 @@ public class Subscribe {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int Id;
+    private int id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ACCOUNT_ID", nullable = false)
@@ -19,7 +19,7 @@ public class Subscribe {
     private Account subAccount;
 
     public int getId() {
-        return Id;
+        return id;
     }
 
     public Account getAccount() {
@@ -31,7 +31,7 @@ public class Subscribe {
     }
 
     public void setId(int id) {
-        Id = id;
+        this.id = id;
     }
 
     public void setAccount(Account account) {

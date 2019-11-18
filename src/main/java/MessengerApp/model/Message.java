@@ -9,7 +9,7 @@ public class Message {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int Id;
+    private int id;
 
     @Column(name = "TEXT", length = 1024, nullable = false)
     private String text;
@@ -24,7 +24,7 @@ public class Message {
 
 
     public int getId() {
-        return Id;
+        return id;
     }
 
     public Date getCreateDate() {
@@ -40,7 +40,7 @@ public class Message {
     }
 
     public void setId(int id) {
-        Id = id;
+        this.id = id;
     }
 
     public void setText(String text) {

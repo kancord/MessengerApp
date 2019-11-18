@@ -13,8 +13,8 @@
             <li><a href="/message">My message</a></li>
             <li><a href="/account">People</a></li>
             <li><a href="/sub">Subscribes</a></li>
-            <li><a href="/">Favorites</a></li>
-            <li><a href="/">News</a></li>
+            <li><a href="/favorite">Favorites</a></li>
+            <li><a href="/">Feed</a></li>
 
         </ul>
 

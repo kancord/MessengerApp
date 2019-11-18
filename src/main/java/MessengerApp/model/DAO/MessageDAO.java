@@ -1,6 +1,7 @@
 package MessengerApp.model.DAO;
 
 import MessengerApp.model.Account;
+import MessengerApp.model.Favorites;
 import MessengerApp.model.Message;
 import MessengerApp.model.Subscribe;
 import org.hibernate.Session;
@@ -17,9 +18,10 @@ import java.util.List;
 @Transactional
 public class MessageDAO {
 
-    @Autowired
+
     private SessionFactory sessionFactory;
 
+    @Autowired
     public void setSessionFactory(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
     }
@@ -40,13 +42,15 @@ public class MessageDAO {
 
     public List<Object[]> getMessagesToYou(Account account){
         Session session = sessionFactory.getCurrentSession();
-        String sql = "select ac.firstName, ac.lastName, m.createDate, m.text " +
-                "from " + Message.class.getName() + " m " +
+        String sql = "select ac.firstName, ac.lastName, m.createDate, m.text , m.id, " +
+                "CASE WHEN (fav.id IS NOT NULL) THEN 'TRUE' ELSE 'FALSE' END  " +
+                "from " + Favorites.class.getName() + " fav " +
+                "RIGHT JOIN fav.message  m " +
                 "INNER JOIN m.account ac "  +
-                " WHERE ac IN " +
+                "WHERE ac IN " +
                 "(SELECT sub.subAccount " +
                 " FROM " + Subscribe.class.getName() + " sub " +
-                " WHERE sub.account=:account)" +
+                " WHERE sub.account=:account) " +
                 "ORDER BY m.createDate DESC";
         Query query = session.createQuery(sql);
         query.setParameter("account", account);

@@ -23,6 +23,16 @@
         });
         btn.remove();
     }
+    function addToFav(mesId, btn) {
+        $.ajax({
+            url: '/addFav/' + mesId,
+            type: 'GET',
+            dataType: 'json',
+            contentType: 'application/json',
+            mimeType: 'application/json'
+        });
+        btn.remove();
+    }
 </script>
 <div id="account" class="contentDiv">
     <div style="text-align: center">
@@ -40,6 +50,7 @@
         <div class="message">
             <textarea cols="50" rows="5" readonly style="resize: none; border: none;">${message.text}</textarea>
         </div>
+        <button id="fav" onclick="addToFav(${message.id}, this)">☆</button>
     </c:forEach>
 </div>
 

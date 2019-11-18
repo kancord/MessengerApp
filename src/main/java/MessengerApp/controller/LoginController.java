@@ -49,6 +49,24 @@ public class LoginController {
     @RequestMapping(value = "/new_account", method = RequestMethod.POST)
     public ModelAndView newAccountPagePost(@ModelAttribute("account") Account account) {
         ModelAndView modelAndView = new ModelAndView();
+        for (int i = 0; i < account.getNickname().length(); i++) {
+            char chr = account.getNickname().charAt(i);
+            if (!((chr >= 'A' && chr <= 'z') || (chr >= '0' && chr <= '9'))) {
+                modelAndView.setViewName("redirect:/new_account?error=login");
+                return modelAndView;
+            }
+        }
+        if (account.getEncPassword().length() < 5) {
+            modelAndView.setViewName("redirect:/new_account?error=password");
+            return modelAndView;
+        }
+        for (int i = 0; i < account.getEncPassword().length(); i++) {
+            char chr = account.getEncPassword().charAt(i);
+            if (!((chr >= 'A' && chr <= 'z') || (chr >= '0' && chr <= '9'))) {
+                modelAndView.setViewName("redirect:/new_account?error=password");
+                return modelAndView;
+            }
+        }
         accountDAO.createAccountByObject(account);
         modelAndView.setViewName("redirect:/login");
         return modelAndView;

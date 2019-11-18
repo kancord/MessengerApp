@@ -16,7 +16,7 @@ import java.util.List;
 @Repository
 @Transactional
 public class AccountDAO  {
-    @Autowired
+
     private SessionFactory sessionFactory;
 
     @Autowired

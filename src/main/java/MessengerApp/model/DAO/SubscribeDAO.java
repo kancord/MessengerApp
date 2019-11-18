@@ -15,12 +15,16 @@ import java.util.List;
 @Transactional
 public class SubscribeDAO {
 
-    @Autowired
     private SessionFactory sessionFactory;
 
-    @Autowired
     private AccountDAO accountDAO;
 
+    @Autowired
+    public void setAccountDAO(AccountDAO accountDAO) {
+        this.accountDAO = accountDAO;
+    }
+
+    @Autowired
     public void setSessionFactory(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
     }
@@ -77,12 +81,11 @@ public class SubscribeDAO {
         }
     }
 
-    public void deleteSubscribe(int accountId, int subAccountId) {
+    public void deleteSubscribeById(int accountId, int subAccountId) {
         if (hasSubscribeByID(accountId, subAccountId)) {
             Session session = sessionFactory.getCurrentSession();
             Subscribe subscribe = getSubscribeByAccIdSubId(accountId, subAccountId);
             session.delete(subscribe);
         }
-
     }
 }

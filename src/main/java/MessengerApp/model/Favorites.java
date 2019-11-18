@@ -9,7 +9,7 @@ public class Favorites {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int Id;
+    private int id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ACCOUNT_ID", nullable = false)
@@ -20,7 +20,7 @@ public class Favorites {
     private Message message;
 
     public int getId() {
-        return Id;
+        return id;
     }
 
     public Account getAccount() {
@@ -32,7 +32,7 @@ public class Favorites {
     }
 
     public void setId(int id) {
-        Id = id;
+        this.id = id;
     }
 
     public void setAccount(Account account) {

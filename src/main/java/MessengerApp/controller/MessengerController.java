@@ -1,6 +1,7 @@
 package MessengerApp.controller;
 
 import MessengerApp.model.DAO.AccountDAO;
+import MessengerApp.model.DAO.FavoritesDAO;
 import MessengerApp.model.DAO.MessageDAO;
 import MessengerApp.model.DAO.SubscribeDAO;
 import MessengerApp.model.Message;
@@ -16,14 +17,33 @@ import java.security.Principal;
 @Controller
 public class MessengerController {
 
-    @Autowired
     private AccountDAO accountDAO;
 
-    @Autowired
     private MessageDAO messageDAO;
 
-    @Autowired
     private SubscribeDAO subscribeDAO;
+
+    private FavoritesDAO favoritesDAO;
+
+    @Autowired
+    public void setAccountDAO(AccountDAO accountDAO) {
+        this.accountDAO = accountDAO;
+    }
+
+    @Autowired
+    public void setMessageDAO(MessageDAO messageDAO) {
+        this.messageDAO = messageDAO;
+    }
+
+    @Autowired
+    public void setSubscribeDAO(SubscribeDAO subscribeDAO) {
+        this.subscribeDAO = subscribeDAO;
+    }
+
+    @Autowired
+    public void setFavoritesDAO(FavoritesDAO favoritesDAO) {
+        this.favoritesDAO = favoritesDAO;
+    }
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public ModelAndView mainPage(@AuthenticationPrincipal MyUser customUser) {
@@ -94,7 +114,29 @@ public class MessengerController {
     @RequestMapping(value = "/delSub/{subId}", method = RequestMethod.DELETE)
     @ResponseBody
     public String ajaxDelSubscribe(@PathVariable("subId") int subId, @AuthenticationPrincipal MyUser customUser) {
-        subscribeDAO.deleteSubscribe(customUser.getId(), subId);
+        subscribeDAO.deleteSubscribeById(customUser.getId(), subId);
+        return "OK";
+    }
+
+    @RequestMapping(value = "/favorite", method = RequestMethod.GET)
+    public ModelAndView favorites(@AuthenticationPrincipal MyUser customUser) {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("favorite_list");
+        modelAndView.addObject("favoriteList", favoritesDAO.getFavoritesToYou(accountDAO.getAccountByID(customUser.getId())));
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/addFav/{mesId}", method = RequestMethod.GET)
+    @ResponseBody
+    public String ajaxAddFavorite(@PathVariable("mesId") int mesId, @AuthenticationPrincipal MyUser customUser) {
+        favoritesDAO.createFavoriteById(customUser.getId(), mesId);
+        return "OK";
+    }
+
+    @RequestMapping(value = "/delFav/{mesId}", method = RequestMethod.DELETE)
+    @ResponseBody
+    public String ajaxDeleteFavorite(@PathVariable("mesId") int mesId, @AuthenticationPrincipal MyUser customUser) {
+        favoritesDAO.deleteFavoriteById(customUser.getId(), mesId);
         return "OK";
     }
 }

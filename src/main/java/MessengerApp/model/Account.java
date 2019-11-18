@@ -8,7 +8,7 @@ public class Account {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int Id;
+    private int id;
 
     @Column(name = "NICKNAME", length = 50, nullable = false)
     private String nickname;
@@ -27,7 +27,7 @@ public class Account {
 
 
     public int getId() {
-        return Id;
+        return id;
     }
 
     public String getNickname() {
@@ -51,7 +51,7 @@ public class Account {
     }
 
     public void setId(int id) {
-        this.Id = id;
+        this.id = id;
     }
 
     public void setNickname(String nickname) {

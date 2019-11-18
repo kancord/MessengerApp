@@ -39,7 +39,7 @@
     <table>
         <th>Firstname</th>
         <th>Lastname</th>
-        <th>Sub</th>
+        <th>   </th>
 
         <c:forEach var="account" items="${accountList}">
             <tr>
