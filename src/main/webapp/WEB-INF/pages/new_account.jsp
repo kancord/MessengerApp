@@ -17,6 +17,9 @@
         <c:if test="${pageContext.request.getParameter('error') == 'password'}">
             <p>Register Failed! Wrong password. Please try again</p>
         </c:if>
+        <c:if test="${pageContext.request.getParameter('error') == 'unique'}">
+            <p>Register Failed! Username already exist. Please try again</p>
+        </c:if>
         <form  method="POST">
             <div class="inputForm">
                 <label for="nickname">Login</label>

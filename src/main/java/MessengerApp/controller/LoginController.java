@@ -67,8 +67,12 @@ public class LoginController {
                 return modelAndView;
             }
         }
-        accountDAO.createAccountByObject(account);
-        modelAndView.setViewName("redirect:/login");
+        try {
+            accountDAO.createAccountByObject(account);
+            modelAndView.setViewName("redirect:/login");
+        } catch (Exception e) {
+            modelAndView.setViewName("redirect:/new_account?error=unique");
+        }
         return modelAndView;
     }
 }
