@@ -9,17 +9,13 @@
 <body>
 <%@ include file="base.jsp" %>
 <script type="text/javascript">
-    function subscribe(id, subId, btn) {
+    function subscribe(subId, btn) {
         $.ajax({
-            url: '/addSub',
-            type: 'GET',
+            url: '/addSub/' + subId,
+            type: 'PUT',
             dataType: 'json',
             contentType: 'application/json',
             mimeType: 'application/json',
-            data: ({
-                id: id,
-                subId: subId
-            })
         });
         btn.remove();
     }
@@ -40,7 +36,7 @@
         <h2>${account.firstName} ${account.lastName}</h2>
         <c:if test="${not isFollowed}">
             <button id="sub"
-                    onclick="subscribe(${pageContext.request.userPrincipal.principal.id}, ${account.id}, this)">
+                    onclick="subscribe(${account.id}, this)">
                 Subscribe
             </button>
         </c:if>

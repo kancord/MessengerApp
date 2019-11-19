@@ -45,7 +45,7 @@ public class AccountDAO {
         return (List<Account>) query.getResultList();
     }
 
-    public void createAccount(String nickname, String firstName, String lastName, String about, String password) {
+    public void createAccountByProp(String nickname, String firstName, String lastName, String about, String password) {
         Session session = sessionFactory.getCurrentSession();
         Account account = new Account();
         account.setAbout(about);
@@ -57,7 +57,7 @@ public class AccountDAO {
         session.persist(account);
     }
 
-    public void createAccountByObject(Account acc) {
+    public void createAccount(Account acc) {
         Session session = sessionFactory.getCurrentSession();
         BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
         acc.setEncPassword(bCryptPasswordEncoder.encode(acc.getEncPassword()));
@@ -82,25 +82,25 @@ public class AccountDAO {
         session.update(account);
     }
 
-    public List<Account> getSubscriberList(int accountId) {
+    public List<Account> getSubscriberList(Account account) {
         Session session = sessionFactory.getCurrentSession();
         String sql = "select ac " +
                 "from " + Subscribe.class.getName() + " sub " +
                 "INNER JOIN sub.account ac " +
                 " WHERE sub.subAccount=:account ";
         Query query = session.createQuery(sql);
-        query.setParameter("account", getAccountByID(accountId));
+        query.setParameter("account", account);
         return (List<Account>) query.getResultList();
     }
 
-    public List<Account> getFollowList(int accountId) {
+    public List<Account> getFollowList(Account account) {
         Session session = sessionFactory.getCurrentSession();
         String sql = "select ac " +
                 "from " + Subscribe.class.getName() + " sub " +
                 "INNER JOIN sub.subAccount ac " +
                 " WHERE sub.account=:account ";
         Query query = session.createQuery(sql);
-        query.setParameter("account", getAccountByID(accountId));
+        query.setParameter("account", account);
         return (List<Account>) query.getResultList();
     }
 }

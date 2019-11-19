@@ -40,14 +40,15 @@ public class MessageDAO {
         return (List<Message>) query.getResultList();
     }
 
-    public List<Object[]> getMessagesToYou(Account account) {
+    public List<Object[]> getMessagesToAccount(Account account) {
         Session session = sessionFactory.getCurrentSession();
-        String sql = "select ac.firstName, ac.lastName, m.createDate, m.text , m.id, " +
+        String sql = "SELECT ac.firstName, ac.lastName, m.createDate, m.text , m.id, " +
                 "CASE WHEN (fav.id IS NOT NULL) THEN 'TRUE' ELSE 'FALSE' END  " +
                 "from " + Favorites.class.getName() + " fav " +
                 "RIGHT JOIN fav.message  m " +
                 "INNER JOIN m.account ac " +
-                "WHERE ac IN " +
+                "WHERE  " +
+                " ac IN " +
                 "(SELECT sub.subAccount " +
                 " FROM " + Subscribe.class.getName() + " sub " +
                 " WHERE sub.account=:account) " +

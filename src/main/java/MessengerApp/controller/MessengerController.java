@@ -5,6 +5,7 @@ import MessengerApp.model.DAO.FavoritesDAO;
 import MessengerApp.model.DAO.MessageDAO;
 import MessengerApp.model.DAO.SubscribeDAO;
 import MessengerApp.model.Message;
+import MessengerApp.service.MessengerService;
 import MessengerApp.service.MyUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -17,39 +18,18 @@ import java.security.Principal;
 @Controller
 public class MessengerController {
 
-    private AccountDAO accountDAO;
-
-    private MessageDAO messageDAO;
-
-    private SubscribeDAO subscribeDAO;
-
-    private FavoritesDAO favoritesDAO;
+    MessengerService messengerService;
 
     @Autowired
-    public void setAccountDAO(AccountDAO accountDAO) {
-        this.accountDAO = accountDAO;
-    }
-
-    @Autowired
-    public void setMessageDAO(MessageDAO messageDAO) {
-        this.messageDAO = messageDAO;
-    }
-
-    @Autowired
-    public void setSubscribeDAO(SubscribeDAO subscribeDAO) {
-        this.subscribeDAO = subscribeDAO;
-    }
-
-    @Autowired
-    public void setFavoritesDAO(FavoritesDAO favoritesDAO) {
-        this.favoritesDAO = favoritesDAO;
+    public void setMessengerService(MessengerService messengerService) {
+        this.messengerService = messengerService;
     }
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public ModelAndView mainPage(@AuthenticationPrincipal MyUser customUser) {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("index");
-        modelAndView.addObject("feedList", messageDAO.getMessagesToYou(accountDAO.getAccountByID(customUser.getId())));
+        modelAndView.addObject("feedList", messengerService.feedListToAccountId(customUser.getId()));
         return modelAndView;
     }
 
@@ -57,7 +37,7 @@ public class MessengerController {
     public ModelAndView accounts() {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("account_list");
-        modelAndView.addObject("accountList", accountDAO.getAccountList());
+        modelAndView.addObject("accountList", messengerService.getAccountList());
         return modelAndView;
     }
 
@@ -65,25 +45,19 @@ public class MessengerController {
     public ModelAndView accountDetail(@PathVariable("id") int id, @AuthenticationPrincipal MyUser customUser) {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("account_detail");
-        modelAndView.addObject("account", accountDAO.getAccountByID(id));
-        modelAndView.addObject("messageList", messageDAO.getMessagesByAccount(accountDAO.getAccountByID(id)));
-        boolean isFollowed = (subscribeDAO.hasSubscribeByID(customUser.getId(), id) || customUser.getId() == id);
+        modelAndView.addObject("account", messengerService.getAccountByID(id));
+        modelAndView.addObject("messageList", messengerService.getMessagesByAccountId(id));
+        boolean isFollowed = (messengerService.hasSubscribeByAccSubaccId(customUser.getId(), id) || customUser.getId() == id);
         modelAndView.addObject("isFollowed", isFollowed);
         return modelAndView;
     }
 
-    @RequestMapping(value = "/addSub", method = RequestMethod.GET)
-    @ResponseBody
-    public String ajaxAddSubscribe(@RequestParam("id") int id, @RequestParam("subId") int subId) {
-        subscribeDAO.createSubscribeById(id, subId);
-        return "OK";
-    }
 
     @RequestMapping(value = "/message", method = RequestMethod.GET)
     public ModelAndView messages(@AuthenticationPrincipal MyUser customUser) {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("message_list");
-        modelAndView.addObject("messageList", messageDAO.getMessagesByAccount(accountDAO.getAccountByID(customUser.getId())));
+        modelAndView.addObject("messageList", messengerService.getMessagesByAccountId(customUser.getId()));
         return modelAndView;
     }
 
@@ -97,7 +71,7 @@ public class MessengerController {
     @RequestMapping(value = "/message/add", method = RequestMethod.POST)
     public ModelAndView messagesAddPost(@ModelAttribute("message") Message msg, @AuthenticationPrincipal MyUser customUser) {
         ModelAndView modelAndView = new ModelAndView();
-        messageDAO.createMessage(msg.getText(), accountDAO.getAccountByID(customUser.getId()));
+        messengerService.createMessage(msg.getText(), customUser.getId());
         modelAndView.setViewName("redirect:/message");
         return modelAndView;
     }
@@ -106,37 +80,44 @@ public class MessengerController {
     public ModelAndView subs(@AuthenticationPrincipal MyUser customUser) {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("subscribe_list");
-        modelAndView.addObject("subscriberAccountList", accountDAO.getSubscriberList(customUser.getId()));
-        modelAndView.addObject("followAccountList", accountDAO.getFollowList(customUser.getId()));
+        modelAndView.addObject("subscriberAccountList", messengerService.getSubscriberListByAccountId(customUser.getId()));
+        modelAndView.addObject("followAccountList", messengerService.getFollowListByAccountId(customUser.getId()));
         return modelAndView;
-    }
-
-    @RequestMapping(value = "/delSub/{subId}", method = RequestMethod.DELETE)
-    @ResponseBody
-    public String ajaxDelSubscribe(@PathVariable("subId") int subId, @AuthenticationPrincipal MyUser customUser) {
-        subscribeDAO.deleteSubscribeById(customUser.getId(), subId);
-        return "OK";
     }
 
     @RequestMapping(value = "/favorite", method = RequestMethod.GET)
     public ModelAndView favorites(@AuthenticationPrincipal MyUser customUser) {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("favorite_list");
-        modelAndView.addObject("favoriteList", favoritesDAO.getFavoritesToYou(accountDAO.getAccountByID(customUser.getId())));
+        modelAndView.addObject("favoriteList", messengerService.favoritesListToAccountId(customUser.getId()));
         return modelAndView;
     }
 
-    @RequestMapping(value = "/addFav/{mesId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/addFav/{mesId}", method = RequestMethod.PUT)
     @ResponseBody
     public String ajaxAddFavorite(@PathVariable("mesId") int mesId, @AuthenticationPrincipal MyUser customUser) {
-        favoritesDAO.createFavoriteById(customUser.getId(), mesId);
+        messengerService.createFavoriteById(customUser.getId(), mesId);
         return "OK";
     }
 
     @RequestMapping(value = "/delFav/{mesId}", method = RequestMethod.DELETE)
     @ResponseBody
     public String ajaxDeleteFavorite(@PathVariable("mesId") int mesId, @AuthenticationPrincipal MyUser customUser) {
-        favoritesDAO.deleteFavoriteById(customUser.getId(), mesId);
+        messengerService.deleteFavoriteById(customUser.getId(), mesId);
+        return "OK";
+    }
+
+    @RequestMapping(value = "/addSub/{subId}", method = RequestMethod.PUT)
+    @ResponseBody
+    public String ajaxAddSubscribe( @PathVariable("subId") int subId, @AuthenticationPrincipal MyUser customUser) {
+        messengerService.createSubscribeById(customUser.getId(), subId);
+        return "OK";
+    }
+
+    @RequestMapping(value = "/delSub/{subId}", method = RequestMethod.DELETE)
+    @ResponseBody
+    public String ajaxDelSubscribe(@PathVariable("subId") int subId, @AuthenticationPrincipal MyUser customUser) {
+        messengerService.deleteSubscribeById(customUser.getId(), subId);
         return "OK";
     }
 }

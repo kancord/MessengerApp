@@ -2,6 +2,7 @@ package MessengerApp.controller;
 
 import MessengerApp.model.Account;
 import MessengerApp.model.DAO.AccountDAO;
+import MessengerApp.service.MessengerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -11,11 +12,12 @@ import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 public class LoginController {
-    private AccountDAO accountDAO;
+
+    MessengerService messengerService;
 
     @Autowired
-    public void setAccountDAO(AccountDAO accountDAO) {
-        this.accountDAO = accountDAO;
+    public void setMessengerService(MessengerService messengerService) {
+        this.messengerService = messengerService;
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
@@ -68,7 +70,7 @@ public class LoginController {
             }
         }
         try {
-            accountDAO.createAccountByObject(account);
+            messengerService.createAccount(account);
             modelAndView.setViewName("redirect:/login");
         } catch (Exception e) {
             modelAndView.setViewName("redirect:/new_account?error=unique");

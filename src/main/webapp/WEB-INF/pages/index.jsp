@@ -11,7 +11,7 @@
     function addToFav(mesId, btn) {
         $.ajax({
             url: '/addFav/' + mesId,
-            type: 'GET',
+            type: 'PUT',
             dataType: 'json',
             contentType: 'application/json',
             mimeType: 'application/json'
