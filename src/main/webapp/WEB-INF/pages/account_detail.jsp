@@ -23,6 +23,7 @@
         });
         btn.remove();
     }
+
     function addToFav(mesId, btn) {
         $.ajax({
             url: '/addFav/' + mesId,
@@ -38,7 +39,10 @@
     <div style="text-align: center">
         <h2>${account.firstName} ${account.lastName}</h2>
         <c:if test="${not isFollowed}">
-            <button id="sub" onclick="subscribe(${pageContext.request.userPrincipal.principal.id}, ${account.id}, this)">Subscribe</button>
+            <button id="sub"
+                    onclick="subscribe(${pageContext.request.userPrincipal.principal.id}, ${account.id}, this)">
+                Subscribe
+            </button>
         </c:if>
 
     </div>

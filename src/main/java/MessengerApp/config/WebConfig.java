@@ -1,4 +1,5 @@
 package MessengerApp.config;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -23,6 +24,6 @@ public class WebConfig implements WebMvcConfigurer {
     }
 
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-       registry.addResourceHandler("/static/**").addResourceLocations("/resources/css/", "/resources/jquery/");
-     }
+        registry.addResourceHandler("/static/**").addResourceLocations("/resources/css/", "/resources/jquery/");
+    }
 }

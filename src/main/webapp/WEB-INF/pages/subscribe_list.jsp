@@ -2,7 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
-    <title>Peoples</title>
+    <title>Subscribes</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/main.css">
     <script src="/static/jquery-3.4.1.min.js"></script>
 </head>
@@ -39,16 +39,14 @@
         <table>
             <th>Firstname</th>
             <th>Lastname</th>
-            <th> </th>
+            <th></th>
             <c:forEach var="account" items="${followAccountList}">
                 <tr>
-                    <div>
-                        <td><a href="/account/${account.id}">${account.firstName}</a></td>
-                        <td><a href="/account/${account.id}">${account.lastName}</a></td>
-                        <td>
-                            <button id="unfollow" onclick="unfollow(${account.id}, this)">Unfollow</button>
-                        </td>
-                    </div>
+                    <td><a href="/account/${account.id}">${account.firstName}</a></td>
+                    <td><a href="/account/${account.id}">${account.lastName}</a></td>
+                    <td>
+                        <button id="unfollow" onclick="unfollow(${account.id}, this)">Unfollow</button>
+                    </td>
                 </tr>
             </c:forEach>
         </table>

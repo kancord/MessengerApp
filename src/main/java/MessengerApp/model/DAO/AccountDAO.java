@@ -15,7 +15,7 @@ import java.util.List;
 
 @Repository
 @Transactional
-public class AccountDAO  {
+public class AccountDAO {
 
     private SessionFactory sessionFactory;
 
@@ -29,7 +29,7 @@ public class AccountDAO  {
         return (Account) session.get(Account.class, id);
     }
 
-    public Account getAccountByNickname(String nickname){
+    public Account getAccountByNickname(String nickname) {
         Session session = sessionFactory.getCurrentSession();
         String sql = "SELECT e FROM " + Account.class.getName() + " e " //
                 + " Where e.nickname = :nickname ";
@@ -38,11 +38,11 @@ public class AccountDAO  {
         return (Account) query.getSingleResult();
     }
 
-    public List<Account> getAccountList(){
+    public List<Account> getAccountList() {
         Session session = sessionFactory.getCurrentSession();
-        String sql = "SELECT e FROM " + Account.class.getName() + " e " ;
+        String sql = "SELECT e FROM " + Account.class.getName() + " e ";
         Query query = session.createQuery(sql);
-        return  (List<Account>) query.getResultList();
+        return (List<Account>) query.getResultList();
     }
 
     public void createAccount(String nickname, String firstName, String lastName, String about, String password) {
@@ -82,26 +82,25 @@ public class AccountDAO  {
         session.update(account);
     }
 
-
     public List<Account> getSubscriberList(int accountId) {
         Session session = sessionFactory.getCurrentSession();
         String sql = "select ac " +
                 "from " + Subscribe.class.getName() + " sub " +
-                "INNER JOIN sub.account ac "  +
+                "INNER JOIN sub.account ac " +
                 " WHERE sub.subAccount=:account ";
         Query query = session.createQuery(sql);
         query.setParameter("account", getAccountByID(accountId));
-        return  (List<Account>) query.getResultList();
+        return (List<Account>) query.getResultList();
     }
 
     public List<Account> getFollowList(int accountId) {
         Session session = sessionFactory.getCurrentSession();
         String sql = "select ac " +
                 "from " + Subscribe.class.getName() + " sub " +
-                "INNER JOIN sub.subAccount ac "  +
+                "INNER JOIN sub.subAccount ac " +
                 " WHERE sub.account=:account ";
         Query query = session.createQuery(sql);
         query.setParameter("account", getAccountByID(accountId));
-        return  (List<Account>) query.getResultList();
+        return (List<Account>) query.getResultList();
     }
 }

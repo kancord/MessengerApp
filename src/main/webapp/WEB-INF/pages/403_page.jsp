@@ -1,4 +1,3 @@
-
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -7,8 +6,8 @@
 </head>
 <body>
 
-    <%@ include file="base.jsp" %>
-    <div class="contentDiv"><h2>Access denied!</h2></div>
+<%@ include file="base.jsp" %>
+<div class="contentDiv"><h2>Access denied!</h2></div>
 
 </body>
 </html>

@@ -14,8 +14,7 @@ public class MyUser extends User {
     }
 
 
-    public MyUser(int id, String username, String password, Collection<? extends GrantedAuthority> authorities)
-    {
+    public MyUser(int id, String username, String password, Collection<? extends GrantedAuthority> authorities) {
         super(username, password, authorities);
         this.id = id;
     }

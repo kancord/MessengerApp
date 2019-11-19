@@ -31,22 +31,22 @@ public class MessageDAO {
         return (Message) session.get(Message.class, id);
     }
 
-    public List<Message> getMessagesByAccount(Account account){
+    public List<Message> getMessagesByAccount(Account account) {
         Session session = sessionFactory.getCurrentSession();
         String sql = "SELECT e FROM " + Message.class.getName() + " e " //
                 + " WHERE e.account = :account ORDER BY e.createDate DESC";
         Query query = session.createQuery(sql);
         query.setParameter("account", account);
-        return  (List<Message>) query.getResultList();
+        return (List<Message>) query.getResultList();
     }
 
-    public List<Object[]> getMessagesToYou(Account account){
+    public List<Object[]> getMessagesToYou(Account account) {
         Session session = sessionFactory.getCurrentSession();
         String sql = "select ac.firstName, ac.lastName, m.createDate, m.text , m.id, " +
                 "CASE WHEN (fav.id IS NOT NULL) THEN 'TRUE' ELSE 'FALSE' END  " +
                 "from " + Favorites.class.getName() + " fav " +
                 "RIGHT JOIN fav.message  m " +
-                "INNER JOIN m.account ac "  +
+                "INNER JOIN m.account ac " +
                 "WHERE ac IN " +
                 "(SELECT sub.subAccount " +
                 " FROM " + Subscribe.class.getName() + " sub " +
@@ -54,7 +54,7 @@ public class MessageDAO {
                 "ORDER BY m.createDate DESC";
         Query query = session.createQuery(sql);
         query.setParameter("account", account);
-        return  (List<Object[]>) query.getResultList();
+        return (List<Object[]>) query.getResultList();
     }
 
     public void createMessage(String text, Account account) {

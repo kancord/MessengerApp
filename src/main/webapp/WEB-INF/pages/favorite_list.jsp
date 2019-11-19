@@ -2,7 +2,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <html>
 <head>
-    <title>Feed</title>
+    <title>Favorites</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/main.css">
     <script src="/static/jquery-3.4.1.min.js"></script>
 </head>

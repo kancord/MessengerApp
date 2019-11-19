@@ -18,9 +18,8 @@ public class Message {
     @JoinColumn(name = "ACCOUNT_ID", nullable = false)
     private Account account;
 
-    @Column(name="CREATE_DATE")
+    @Column(name = "CREATE_DATE")
     private Date createDate;
-
 
 
     public int getId() {

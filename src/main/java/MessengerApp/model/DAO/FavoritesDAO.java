@@ -42,23 +42,23 @@ public class FavoritesDAO {
         return (Favorites) session.get(Favorites.class, id);
     }
 
-    public Favorites getFavoritesByAccIdMesId(int accountId, int messageId){
+    public Favorites getFavoritesByAccIdMesId(int accountId, int messageId) {
         Session session = sessionFactory.getCurrentSession();
         String sql = "select e " + "from " + Favorites.class.getName() + " e " +
                 " WHERE e.account=:account and e.message=:message";
         Query query = session.createQuery(sql);
         query.setParameter("account", accountDAO.getAccountByID(accountId));
         query.setParameter("message", messageDAO.getMessageByID(messageId));
-        return  (Favorites) query.uniqueResult();
+        return (Favorites) query.uniqueResult();
     }
 
-    public List<Favorites> getFavoritesByAccount(Account account){
+    public List<Favorites> getFavoritesByAccount(Account account) {
         Session session = sessionFactory.getCurrentSession();
         String sql = "SELECT e FROM " + Favorites.class.getName() + " e " //
                 + " Where e.account = :account ";
         Query query = session.createQuery(sql);
         query.setParameter("account", account);
-        return  (List<Favorites>) query.getResultList();
+        return (List<Favorites>) query.getResultList();
     }
 
     public void createFavorite(Account account, Message message) {
@@ -75,17 +75,17 @@ public class FavoritesDAO {
         session.delete(fav);
     }
 
-    public List<Object[]> getFavoritesToYou(Account account){
+    public List<Object[]> getFavoritesToYou(Account account) {
         Session session = sessionFactory.getCurrentSession();
         String sql = "select ac.firstName, ac.lastName, m.createDate, m.text , m.id " +
                 "from " + Favorites.class.getName() + " fav " +
                 " INNER JOIN fav.message m  " +
-                " INNER JOIN m.account ac "  +
+                " INNER JOIN m.account ac " +
                 " WHERE fav.account=:account " +
                 "ORDER BY m.createDate DESC";
         Query query = session.createQuery(sql);
         query.setParameter("account", account);
-        return  (List<Object[]>) query.getResultList();
+        return (List<Object[]>) query.getResultList();
     }
 
     public boolean hasFavByID(int accountId, int messageId) {

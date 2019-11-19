@@ -10,7 +10,9 @@
 <%@ include file="base.jsp" %>
 <div id="messages" class="contentDiv">
     <h2>My messages</h2>
-    <a href="/message/add"><button><b>+</b></button></a>
+    <a href="/message/add">
+        <button><b>+</b></button>
+    </a>
     <c:forEach var="message" items="${messageList}">
         <h4><fmt:formatDate value="${message.createDate}" pattern="HH:mm dd.MM.yyyy "/></h4>
         <div class="message">

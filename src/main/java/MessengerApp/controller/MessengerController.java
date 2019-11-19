@@ -67,7 +67,7 @@ public class MessengerController {
         modelAndView.setViewName("account_detail");
         modelAndView.addObject("account", accountDAO.getAccountByID(id));
         modelAndView.addObject("messageList", messageDAO.getMessagesByAccount(accountDAO.getAccountByID(id)));
-        boolean isFollowed = (subscribeDAO.hasSubscribeByID(customUser.getId(), id) || customUser.getId()==id);
+        boolean isFollowed = (subscribeDAO.hasSubscribeByID(customUser.getId(), id) || customUser.getId() == id);
         modelAndView.addObject("isFollowed", isFollowed);
         return modelAndView;
     }
